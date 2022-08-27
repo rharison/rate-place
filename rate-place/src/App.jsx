@@ -63,8 +63,9 @@ function App() {
 
           <div className='container containerFotos'>
             {place?.featuredPhotos && place?.featuredPhotos.slice(0, 16).map(photo => {
-              return <img key={photo} className='foto' src={photo} alt='foto'/>
+              return <img onLoad={(e) => console.log(e)} key={photo} className='foto' src={photo} alt='foto'/>
             })}
+            {place?.featuredPhotos?.length === 0 && <span>Não há fotos</span>}
           </div>
         </section>
 
