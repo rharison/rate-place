@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 
 function App() {
   const [place, setPlace] = useState(null)
-  const [modalVisibility, setModalVisibility] = useState(false)
+  const [modalVisibility, setModalVisibility] = useState(true)
 
   useEffect(() => {
     getNewPlace()
@@ -26,21 +26,22 @@ function App() {
       }
     }
   }
+
   async function evaluatedPlace(evaluated) {
-    console.log('place', place)
     setModalVisibility(true)
     const response = await setEvaluatedPlace(place, evaluated)
     if (response === 'Place evaluated') {
       getNewPlace()
     }
-    setModalVisibility(false)
   }
 
   async function getNewPlace() {
     setModalVisibility(true)
     const place = await getPlace()
     setPlace(place)
-    setModalVisibility(false)
+    setTimeout(() => {
+      setModalVisibility(false)
+    }, 100)
   }
 
   return (
@@ -51,7 +52,7 @@ function App() {
         </div>
       }
 
-      <div className="App">
+      {!modalVisibility && <div className="App">
         <section className='conteudo'>
           <div className='container containerTexto'>
             <span><b>Nome:</b> {place?.mainName}</span>
@@ -86,7 +87,7 @@ function App() {
             onClick={() => evaluatedPlace(true)}>BOM
           </Button>
         </div>
-      </div>
+      </div>}
     </NextUIProvider>
   )
 }
