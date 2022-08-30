@@ -24,6 +24,9 @@ function App() {
       if(e.key === 'ArrowRight') {
         evaluatedPlace(true)
       }
+      if(e.key === 'ArrowDown') {
+        evaluatedPlace('maybe')
+      }
     }
   }
 
@@ -78,6 +81,14 @@ function App() {
             variant="contained"
             style={{fontSize: '3rem'}}
             onClick={() => evaluatedPlace(false)}>RUIM
+          </Button>
+
+          <Button
+            fullWidth
+            color="warning"
+            variant="contained"
+            style={{fontSize: '3rem'}}
+            onClick={() => evaluatedPlace('maybe')}>NÃO SEI
           </Button>
 
           <Button
