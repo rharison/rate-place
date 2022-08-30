@@ -60,6 +60,7 @@ function App() {
             <span><b>Nota: </b> {place?.ratingInformation?.basicRatingInformation?.averageGrade}</span>
             <span><b>Avaliações: </b> {place?.ratingInformation?.basicRatingInformation?.totalOfEvaluations}</span>
             <span><b>Tem comentários?:</b> {place?.topComments.length ? 'Sim' : 'Não' }</span>
+            <span><a href={place?.url} target='_blank'>Google Maps</a></span>
           </div>
 
           <div className='container containerFotos'>
