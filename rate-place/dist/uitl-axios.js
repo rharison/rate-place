@@ -2,7 +2,7 @@ import axios from 'axios'
 const BASE_URL = 'http://192.168.1.102:3333'
 
 
-function getOptionsToRequest(nameFunction, place, evaluated) {
+function getOptionsToRequest(nameFunction, place, evaluated, category) {
   const optionsByFunction = {
     getPlace: () => {
       const path = '/place'
@@ -19,6 +19,14 @@ function getOptionsToRequest(nameFunction, place, evaluated) {
         url: BASE_URL+path,
         method: 'POST',
         data: place
+      }
+    },
+    setEvaluatedCategory: () => {
+      const path = `/place/category/${category}/evaluated/${evaluated}`
+
+      return {
+        url: BASE_URL+path,
+        method: 'POST',
       }
     }
   }
@@ -49,7 +57,20 @@ export async function setEvaluatedPlace(place, evaluated) {
   }
 }
 
+export async function setEvaluatedCategory(category, evaluated) {
+  try {
+    const options = getOptionsToRequest('setEvaluatedCategory', null, evaluated, category)
+
+    const { data: res } = await axios(options)
+
+    return res
+  } catch(err) {
+    return new Error(err)
+  }
+}
+
 export default {
   getPlace,
-  setEvaluatedPlace
+  setEvaluatedPlace,
+  setEvaluatedCategory
 }
