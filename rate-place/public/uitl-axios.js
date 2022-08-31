@@ -28,6 +28,14 @@ function getOptionsToRequest(nameFunction, place, evaluated, category) {
         url: BASE_URL+path,
         method: 'POST',
       }
+    },
+    getEvaluateds: () => {
+      const path = '/place/evaluateds'
+
+      return {
+        url: BASE_URL+path,
+        method: 'GET',
+      }
     }
   }
 
@@ -69,8 +77,21 @@ export async function setEvaluatedCategory(category, evaluated) {
   }
 }
 
+export async function getEvaluateds() {
+  try {
+    const options = getOptionsToRequest('getEvaluateds')
+
+    const { data: res } = await axios(options)
+
+    return res
+  } catch(err) {
+    return new Error(err)
+  }
+}
+
 export default {
   getPlace,
   setEvaluatedPlace,
-  setEvaluatedCategory
+  setEvaluatedCategory,
+  getEvaluateds
 }

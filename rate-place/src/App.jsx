@@ -1,15 +1,17 @@
 import './App.css'
 import Button from '@mui/material/Button';
-import { NextUIProvider, Loading, Dropdown } from '@nextui-org/react';
-import { getPlace, setEvaluatedPlace, setEvaluatedCategory } from '../public/uitl-axios.js'
+import { NextUIProvider, Loading, Dropdown, Badge } from '@nextui-org/react';
+import { getPlace, setEvaluatedPlace, setEvaluatedCategory, getEvaluateds } from '../public/uitl-axios.js'
 import { useEffect, useState } from 'react'
 
 function App() {
   const [place, setPlace] = useState(null)
   const [modalVisibility, setModalVisibility] = useState(true)
+  const [contador, setContador] = useState(0)
 
   useEffect(() => {
     getNewPlace()
+    getTotalEvalueted()
   }, [])
 
   useEffect(() => {
@@ -58,7 +60,13 @@ function App() {
     }
   }
 
+  async function getTotalEvalueted() {
+    const response = await getEvaluateds()
+    setContador(response)
+  }
+
   async function getNewPlace() {
+    getTotalEvalueted()
     setModalVisibility(true)
     const place = await getPlace()
     setPlace(place)
@@ -69,6 +77,9 @@ function App() {
 
   return (
     <NextUIProvider>
+      <div className='contador'>
+        <span><b>Total: </b>{contador}</span>
+      </div>
       {modalVisibility &&
         <div className='loading'>
           <Loading type="points" gradientBackground size="xl"/>
