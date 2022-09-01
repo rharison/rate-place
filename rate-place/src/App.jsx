@@ -1,6 +1,6 @@
 import './App.css'
 import Button from '@mui/material/Button';
-import { NextUIProvider, Loading, Dropdown, Badge } from '@nextui-org/react';
+import { NextUIProvider, Loading, Dropdown } from '@nextui-org/react';
 import { getPlace, setEvaluatedPlace, setEvaluatedCategory, getEvaluateds } from '../public/uitl-axios.js'
 import { useEffect, useState } from 'react'
 
@@ -8,11 +8,17 @@ function App() {
   const [place, setPlace] = useState(null)
   const [modalVisibility, setModalVisibility] = useState(true)
   const [contador, setContador] = useState(0)
+  const [modoAvaliacao, setModoAvaliacao] = useState(null)
 
   useEffect(() => {
-    getNewPlace()
+    if(!modoAvaliacao){
+      return
+    }
+
+    getNewPlace(modoAvaliacao)
     getTotalEvalueted()
-  }, [])
+
+  }, [modoAvaliacao])
 
   useEffect(() => {
     setEventsKey()
@@ -48,7 +54,7 @@ function App() {
     setModalVisibility(true)
     const response = await setEvaluatedPlace(place, evaluated)
     if (response === 'Place evaluated') {
-      getNewPlace()
+      getNewPlace(modoAvaliacao)
     }
   }
 
@@ -56,7 +62,7 @@ function App() {
     setModalVisibility(true)
     const response = await setEvaluatedCategory(category, evaluated)
     if (response === 'Category evaluated') {
-      getNewPlace()
+      getNewPlace(modoAvaliacao)
     }
   }
 
@@ -65,10 +71,17 @@ function App() {
     setContador(response)
   }
 
-  async function getNewPlace() {
+  async function getNewPlace(mode) {
+    const placeHolderMode = {
+      normal: 'normal',
+      maybe: 'maybe',
+      ruim: 'false'
+    }
+
+    const modeSelected = mode ? placeHolderMode[mode] : modoAvaliacao
     getTotalEvalueted()
     setModalVisibility(true)
-    const place = await getPlace()
+    const place = await getPlace(modeSelected)
     setPlace(place)
     setTimeout(() => {
       setModalVisibility(false)
@@ -77,16 +90,44 @@ function App() {
 
   return (
     <NextUIProvider>
-      <div className='contador'>
-        <span><b>Total: </b>{contador}</span>
-      </div>
-      {modalVisibility &&
+      {!modoAvaliacao &&
+        <div className='menu-modo'>
+        <Button
+            fullWidth
+            variant="contained"
+            style={{fontSize: '3rem'}}
+            onClick={() => setModoAvaliacao('normal')}>NORMAL
+          </Button>
+          <Button
+            fullWidth
+            variant="contained"
+            color="warning"
+            style={{fontSize: '3rem'}}
+            onClick={() => setModoAvaliacao('maybe')}>jÁ AVALIADOS (NÃO SEI)
+          </Button>
+          <Button
+            fullWidth
+            variant="contained"
+            color="error"
+            style={{fontSize: '3rem'}}
+            onClick={() => setModoAvaliacao('ruim')}>jÁ AVALIADOS (RUIM)
+          </Button>
+        </div>
+      }
+
+      {modoAvaliacao && modoAvaliacao === 'normal' &&
+        <div className='contador'>
+          <span><b>Total: </b>{contador}</span>
+        </div>
+      }
+
+      {modalVisibility && modoAvaliacao &&
         <div className='loading'>
           <Loading type="points" gradientBackground size="xl"/>
         </div>
       }
 
-      {!modalVisibility && <div className="App">
+      {!modalVisibility && modoAvaliacao && <div className="App">
         <section className='conteudo'>
           <div className='container containerTexto'>
             <span><b>Nome:</b> {place?.mainName}</span>
