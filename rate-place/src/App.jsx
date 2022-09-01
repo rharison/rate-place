@@ -141,9 +141,9 @@ function App() {
               selectionMode="single"
               onSelectionChange={handleSelectModoAvaliacao}
             >
-              {modoAvaliacao !== 'normal' && <Dropdown.Item color='primary' key="normal">NORMAL</Dropdown.Item>}
-              {modoAvaliacao !== 'maybe' && <Dropdown.Item color='warning' key="maybe">NÃO SEI</Dropdown.Item>}
-              {modoAvaliacao !== 'false' && <Dropdown.Item color='error' key="false">RUIM</Dropdown.Item>}
+              {modoAvaliacao !== 'normal' && <Dropdown.Item color='primary' key="normal">NÃO AVALIADOS</Dropdown.Item>}
+              {modoAvaliacao !== 'maybe' && <Dropdown.Item color='warning' key="maybe">AVALIADOS - NÃO SEI</Dropdown.Item>}
+              {modoAvaliacao !== 'ruim' && <Dropdown.Item color='error' key="ruim">AVALIADOS - RUIM</Dropdown.Item>}
             </Dropdown.Menu>
           </Dropdown>
         </div>
@@ -189,23 +189,23 @@ function App() {
         </section>
 
         <div className='containerBotoes'>
-          <Button
+         {modoAvaliacao !== 'ruim' && <Button
             fullWidth
             color="error"
             variant="contained"
             style={{fontSize: '3rem'}}
             onClick={() => evaluatedPlace(false)}>RUIM
-          </Button>
+          </Button>}
 
-          <Button
+          {modoAvaliacao !== 'maybe' && <Button
             fullWidth
             color="warning"
             variant="contained"
             style={{fontSize: '3rem'}}
             onClick={() => evaluatedPlace('maybe')}>NÃO SEI
-          </Button>
+          </Button>}
 
-          <Button
+           <Button
             fullWidth
             color="success"
             variant="contained"
