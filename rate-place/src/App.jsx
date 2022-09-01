@@ -189,21 +189,21 @@ function App() {
         </section>
 
         <div className='containerBotoes'>
-         {modoAvaliacao !== 'ruim' && <Button
+         <Button
             fullWidth
             color="error"
             variant="contained"
             style={{fontSize: '3rem'}}
             onClick={() => evaluatedPlace(false)}>RUIM
-          </Button>}
+          </Button>
 
-          {modoAvaliacao !== 'maybe' && <Button
+          <Button
             fullWidth
             color="warning"
             variant="contained"
             style={{fontSize: '3rem'}}
             onClick={() => evaluatedPlace('maybe')}>NÃO SEI
-          </Button>}
+          </Button>
 
            <Button
             fullWidth
