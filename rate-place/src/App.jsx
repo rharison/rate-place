@@ -38,6 +38,11 @@ function App() {
     }
   }
 
+  function handleSelectModoAvaliacao(event) {
+    const modoSelecionado = event.anchorKey
+    setModoAvaliacao(modoSelecionado)
+  }
+
   function handleSelectCategory(event) {
     const categorySelected = event.anchorKey
     const valuesToEvatualted = {
@@ -71,14 +76,26 @@ function App() {
     setContador(response)
   }
 
-  async function getNewPlace(mode) {
+  function getPlaceHolderMode(mode){
     const placeHolderMode = {
       normal: 'normal',
       maybe: 'maybe',
       ruim: 'false'
     }
+    return placeHolderMode[mode]
+  }
 
-    const modeSelected = mode ? placeHolderMode[mode] : modoAvaliacao
+  function getDisplayMode(mode) {
+    const displayMode = {
+      normal: 'Não avaliados',
+      maybe: 'Avaliados - Não Sei',
+      ruim: 'Avaliados - Ruim'
+    }
+    return displayMode[mode]
+  }
+
+  async function getNewPlace(mode) {
+    const modeSelected = getPlaceHolderMode(mode)
     getTotalEvalueted()
     setModalVisibility(true)
     const place = await getPlace(modeSelected)
@@ -96,7 +113,7 @@ function App() {
             fullWidth
             variant="contained"
             style={{fontSize: '3rem'}}
-            onClick={() => setModoAvaliacao('normal')}>NORMAL
+            onClick={() => setModoAvaliacao('normal')}>NÃO AVALIADOS
           </Button>
           <Button
             fullWidth
@@ -115,7 +132,24 @@ function App() {
         </div>
       }
 
-      {modoAvaliacao && modoAvaliacao === 'normal' &&
+      {modoAvaliacao &&
+        <div className='alterar-modo'>
+          <Dropdown>
+            <Dropdown.Button flat>Modo: {' '} {getDisplayMode(modoAvaliacao)} | Alterar modo?</Dropdown.Button>
+            <Dropdown.Menu
+              aria-label="Alterar modo de avaliação"
+              selectionMode="single"
+              onSelectionChange={handleSelectModoAvaliacao}
+            >
+              {modoAvaliacao !== 'normal' && <Dropdown.Item color='primary' key="normal">NORMAL</Dropdown.Item>}
+              {modoAvaliacao !== 'maybe' && <Dropdown.Item color='warning' key="maybe">NÃO SEI</Dropdown.Item>}
+              {modoAvaliacao !== 'false' && <Dropdown.Item color='error' key="false">RUIM</Dropdown.Item>}
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+      }
+
+      {modoAvaliacao &&
         <div className='contador'>
           <span><b>Total: </b>{contador}</span>
         </div>
