@@ -2,13 +2,19 @@ import axios from 'axios'
 const BASE_URL = 'http://192.168.1.102:3333'
 
 
-function getOptionsToRequest(nameFunction, place, evaluated, category) {
+function getOptionsToRequest(nameFunction, place, evaluated, category, type) {
   const optionsByFunction = {
     getPlace: () => {
-      const path = '/place'
+      const endpointByType = {
+        normal: '/place',
+        maybe: '/place/evaluated/maybe',
+        false: '/place/evaluated/false',
+      }
+
+      const endpoint = endpointByType[type]
 
       return {
-        url: BASE_URL+path,
+        url: BASE_URL+endpoint,
         method: 'GET',
       }
     },
@@ -42,8 +48,8 @@ function getOptionsToRequest(nameFunction, place, evaluated, category) {
   return optionsByFunction[nameFunction]()
 }
 
-export async function getPlace() {
-  const options = getOptionsToRequest('getPlace')
+export async function getPlace(type) {
+  const options = getOptionsToRequest('getPlace', null, null, null, type)
   const { data: place } = await axios(options)
 
   if(place) {
