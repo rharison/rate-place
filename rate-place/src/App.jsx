@@ -152,9 +152,10 @@ function App() {
       {modoAvaliacao && contador &&
         <div className='contador'>
           <span><b>Total avaliados: </b>{contador.total}</span>
-          <span><b>Não avaliados: </b>{contador.naoAvaliados}</span>
+          <span><b>Avaliados - Bom: </b>{contador.bom}</span>
           <span><b>Avaliados - Não sei: </b>{contador.maybe}</span>
           <span><b>Avaliados - Ruim: </b>{contador.ruim}</span>
+          <span><b>Não avaliados: </b>{contador.naoAvaliados}</span>
         </div>
       }
 
