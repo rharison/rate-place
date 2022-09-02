@@ -9,6 +9,7 @@ function getOptionsToRequest(nameFunction, place, evaluated, category, type) {
         normal: '/place',
         maybe: '/place/evaluated/maybe',
         false: '/place/evaluated/false',
+        true: '/place/evaluated/true',
       }
 
       const endpoint = endpointByType[type]

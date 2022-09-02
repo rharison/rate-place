@@ -80,7 +80,8 @@ function App() {
     const placeHolderMode = {
       normal: 'normal',
       maybe: 'maybe',
-      ruim: 'false'
+      ruim: 'false',
+      bom: 'true'
     }
     return placeHolderMode[mode]
   }
@@ -89,7 +90,8 @@ function App() {
     const displayMode = {
       normal: 'Não avaliados',
       maybe: 'Avaliados - Não Sei',
-      ruim: 'Avaliados - Ruim'
+      ruim: 'Avaliados - Ruim',
+      bom: 'Avaliados - Bom'
     }
     return displayMode[mode]
   }
@@ -109,11 +111,18 @@ function App() {
     <NextUIProvider>
       {!modoAvaliacao &&
         <div className='menu-modo'>
-        <Button
+          <Button
             fullWidth
             variant="contained"
             style={{fontSize: '3rem'}}
             onClick={() => setModoAvaliacao('normal')}>NÃO AVALIADOS
+          </Button>
+          <Button
+            fullWidth
+            variant="contained"
+            color="success"
+            style={{fontSize: '3rem'}}
+            onClick={() => setModoAvaliacao('bom')}>jÁ AVALIADOS (BOM)
           </Button>
           <Button
             fullWidth
@@ -142,6 +151,7 @@ function App() {
               onSelectionChange={handleSelectModoAvaliacao}
             >
               {modoAvaliacao !== 'normal' && <Dropdown.Item color='primary' key="normal">NÃO AVALIADOS</Dropdown.Item>}
+              {modoAvaliacao !== 'bom' && <Dropdown.Item color='error' key="ruim">AVALIADOS - BOM</Dropdown.Item>}
               {modoAvaliacao !== 'maybe' && <Dropdown.Item color='warning' key="maybe">AVALIADOS - NÃO SEI</Dropdown.Item>}
               {modoAvaliacao !== 'ruim' && <Dropdown.Item color='error' key="ruim">AVALIADOS - RUIM</Dropdown.Item>}
             </Dropdown.Menu>
